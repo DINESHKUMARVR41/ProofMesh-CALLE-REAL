@@ -1,0 +1,48 @@
+{
+  "_comment": "PHASE E — let judges place a real call from the deployed app. The rules require judges be given access to a working Project for testing, and 'CALL-E imported and actually called at runtime' is a scored criterion — better proven live than asserted. This is a PUBLIC, UNAUTHENTICATED URL that spends real call credits and makes a real phone ring, so the guardrails are the hard part, not the feature. Build the guardrails first. Run on master.",
+  "verify": ["pnpm typecheck", "pnpm lint", "pnpm build", "pnpm test", "pnpm verify-staging"],
+  "tasks": [
+    {
+      "id": "call-budget-guard",
+      "title": "Server-side call budget and rate limiting — build this FIRST",
+      "details": "Before any UI exists, build the guard. A new table `demo_calls` on the demo project recording every call attempt with timestamp, destination (stored masked), IP hash, and outcome. Enforce, server-side and at the data layer, not in the UI: a hard total cap (default 60, from env DEMO_CALL_BUDGET); a per-IP cap of 2 calls per 24 hours; and a global rate limit of 1 call per 2 minutes so the credit pool can't be drained in a burst. Every check happens in the server action before CALL-E is touched. When the budget is exhausted the app says so plainly rather than failing obscurely. Add a migration and apply it to the demo project.",
+      "done_when": "A test proves the server action refuses a call when the total cap is hit, when the per-IP cap is hit, and when the rate limit window is open — and that CALL-E is never called in any of those three cases."
+    },
+    {
+      "id": "destination-validation",
+      "title": "Validate and constrain the destination number",
+      "details": "The judge types a phone number and someone's phone rings, so validate hard: E.164 format only; reject anything not in CALL-E's supported region list (US, SG, MY, IN, AE, AU, CA, GB, VN, DE, JP, FR, MX, BR, ID, PH, KE, BD); reject obviously malformed or premium-rate prefixes. Derive the region from the number rather than trusting client input. Store the number masked in demo_calls and never log it in full. Reject on the server, not just in the form.",
+      "done_when": "Tests cover a valid number per region, an unsupported region, a malformed number, and a number with the region spoofed in the request body — all rejected server-side except the valid one."
+    },
+    {
+      "id": "disclosure-in-script",
+      "title": "Automated-call disclosure in the generated script",
+      "details": "The voice is convincing enough that a listener may not realise it is automated. The opening line must identify the call as automated, before the invoice is discussed — brief and natural, not a legal recital. Something in the shape of: 'Hello, this is an automated call from Devixus Finance on behalf of a client.' Apply this to the script generator used by both the demo app and the CLI. Also add a section to the skill's references/safety.md explaining that disclosure requirements vary by jurisdiction and operators must check their own.",
+      "done_when": "Every generated script opens with an automated-call disclosure before the invoice is mentioned, verified by a test, and safety.md covers the jurisdictional point."
+    },
+    {
+      "id": "call-server-action",
+      "title": "Server action for the demo call",
+      "details": "A 'use server' action that takes an invoice id and a destination number. Order of operations: validate the number, check all three guards, generate the script, create the draft arrangement, place the call via the existing CalleClient, then record it. It must derive everything it can server-side and trust nothing from the client beyond the invoice id and the number. Reuse the existing orchestration rather than duplicating it. Never expose the CALL-E key to the client.",
+      "done_when": "The action places a call end to end in mock mode from a test, writes the calls and demo_calls rows, and a test confirms it rejects a request whose body has been tampered with."
+    },
+    {
+      "id": "call-ui",
+      "title": "The judge-facing call flow",
+      "details": "On an invoice detail page, a 'Place a recovery call' control. The flow: judge enters their own number, the drafted script is shown in full for review, they approve, the call is placed, and the page shows live status while it runs. This mirrors the product's own draft-then-approve posture — the approval step is the point, not friction to remove. Show the remaining call budget honestly. State plainly that this places a real phone call to the number entered, that the caller identifies itself as automated, and that the number is not stored. Match the editorial design already in place.",
+      "done_when": "The full flow works against the demo project in mock mode, the script is visible before approval, and the budget count is shown."
+    },
+    {
+      "id": "result-polling",
+      "title": "Poll for and display the call result",
+      "details": "After placing, poll for the final CallTask and show what came back: outcome, any captured payment date, duration, and the transcript turns. Note from a real call that post-call processing took about 28 seconds after the call ended, so the poll window must comfortably exceed the call duration — do not give up while the task is still processing. Show a clear state while polling, and a clear timeout message that tells the judge the call happened even if the result did not arrive in time.",
+      "done_when": "A mock call shows outcome, duration, and transcript on the page, and a simulated slow result shows the polling state then resolves rather than erroring."
+    },
+    {
+      "id": "abuse-review",
+      "title": "Adversarial review of the public call endpoint",
+      "details": "Review the whole flow as someone trying to abuse it. Check: can the caps be bypassed by clearing cookies, changing IP, or calling the action directly; can the destination region be spoofed; can the invoice id be swapped for one that changes the script content; is any secret reachable from the client; can the endpoint be used to place repeated calls to one number as harassment; does anything log a full phone number. Report findings as Blocking / Should fix / Nitpick in ABUSE-REVIEW.md. Fix nothing in this task.",
+      "done_when": "ABUSE-REVIEW.md exists with findings by severity, explicitly covering cap bypass, region spoofing, secret exposure, repeat-calling one number, and phone number logging."
+    }
+  ]
+}

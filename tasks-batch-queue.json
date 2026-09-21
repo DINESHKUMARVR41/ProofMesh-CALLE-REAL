@@ -1,0 +1,42 @@
+{
+  "_comment": "PHASE F — scheduled drafting + batch approval. The product answer to 'why AI if I click per call': the system drafts recovery calls for invoices crossing overdue thresholds on a schedule, the owner approves them as a batch in one review moment, and approved calls dial themselves at intervals. Approval survives (every winner in the teardown was draft-then-approve; the CALL-E maintainers' safety expectations say no hidden recurrence — so recurrence here is VISIBLE and approval-gated). Fully-autonomous mode goes in What's-next, not in the build. Run on master, after Phase E (reuses its guards).",
+  "verify": ["pnpm typecheck", "pnpm lint", "pnpm build", "pnpm test", "pnpm verify-staging"],
+  "tasks": [
+    {
+      "id": "call-queue-schema",
+      "title": "Call queue schema",
+      "details": "Migration: a `call_queue` table — invoice_id, drafted_at, script text, scheduled_for, status (drafted | approved | dialing | completed | dropped | expired), approved_at, batch_id, and outcome linkage to the calls table. RLS on. State transitions enforced at the data layer exactly like the existing arrangements state machine: nothing can move drafted -> dialing without passing through approved, enforced by trigger, not by UI. Drafts expire if not approved within a configurable window (default 48h) so a stale queue never dials. Apply to staging, regenerate types.",
+      "done_when": "A data-layer test proves a drafted row cannot reach dialing without approval, and an expired draft cannot be approved. verify-staging passes with the new table."
+    },
+    {
+      "id": "threshold-drafting",
+      "title": "Threshold sweep — draft calls for newly overdue invoices",
+      "details": "A sweep function (runnable via a route handler for Vercel cron, and via `pnpm sweep` for local/demo use): find invoices crossing overdue thresholds (7, 14, 30 days — configurable) that have no open queue entry and no recent call, generate the recovery script for each using the existing generator (with the disclosure line), and insert drafted queue rows. Idempotent: running the sweep twice drafts nothing twice. Never drafts for paid, disputed-and-frozen, or already-arranged invoices. A no-duplicate-jobs check is a maintainer-stated safety expectation — enforce it with a partial unique index, not application logic alone.",
+      "done_when": "Tests: a 40-day-overdue invoice gets one draft; running the sweep again drafts nothing; a paid invoice never drafts; two concurrent sweeps cannot double-draft (index proves it)."
+    },
+    {
+      "id": "batch-approval-ui",
+      "title": "The morning review — batch approval queue page",
+      "details": "A /queue page in the existing editorial design: drafted calls listed with client, amount, days overdue, scheduled time, and the full script expandable per row. Owner can edit a script inline, drop a draft, or approve — individually or all at once. Approval stamps approved_at and batch_id. The page states plainly what approval means: these calls will be placed automatically at the scheduled times. Show queue history (completed/dropped/expired) below the fold. This page is the product's core loop made visible — it should read as a two-minute morning ritual, not an admin panel.",
+      "done_when": "The flow works end to end in mock: sweep drafts appear, one is edited, one dropped, the rest batch-approved, and the states are correct in the table."
+    },
+    {
+      "id": "dialer",
+      "title": "The dialer — place approved calls at intervals",
+      "details": "A dialer function (route handler for cron + `pnpm dial` locally): pick the next approved queue entry whose scheduled_for has passed, place it through the existing orchestration and CalleClient, record the outcome, link the calls row, mark completed. Strictly one at a time — concurrency on the default number is 1, so the dialer must never overlap calls; use a lease/lock column so two cron ticks cannot dial simultaneously. Respect a configurable calling-hours window (default 10:00-18:00 destination-local, derived from region) so an approved call never rings someone at 3am. Failures release the lease and mark the entry for retry once, then error.",
+      "done_when": "Tests: two simultaneous dialer invocations place exactly one call; an entry scheduled outside calling hours does not dial until the window opens; a failed call retries once then lands as error; every dialed entry links to a calls row."
+    },
+    {
+      "id": "queue-visibility",
+      "title": "Recurrence made visible everywhere",
+      "details": "No hidden recurrence: the invoice detail page shows any queued/scheduled call for that invoice with its scheduled time and a cancel control; the /invoices list marks invoices with a pending scheduled call; the /queue page is linked from the main nav. Add a line to the app's framing copy: drafted on a schedule, approved by a human, dialed automatically. Update the skill's SKILL.md and safety.md to document the batch-approval recurrence pattern as the intended operating mode, with per-call approval as the manual alternative.",
+      "done_when": "A queued call is visible on the detail page and list, cancellable before dialing, and the skill docs describe the pattern."
+    },
+    {
+      "id": "whats-next-and-review",
+      "title": "Scope honesty + review",
+      "details": "Update README and PR-BODY.md: batch-approval recurrence is what ships; fully-autonomous dialing (no approval step) is explicitly What's-next with a sentence on why it is gated (regulated domain, maintainer safety expectations, the teardown finding that approval-gated designs won). Then a review pass: re-run the abuse review against the new surfaces (can the sweep or dialer be triggered externally to drain budget? are cron routes protected by a secret? can a dropped/expired draft be resurrected?), confirm the removal test still passes, and check no unmeasured metric has crept into any doc. Findings to QUEUE-REVIEW.md, severity-tagged, fix nothing in this task.",
+      "done_when": "README/PR-BODY updated, QUEUE-REVIEW.md exists covering cron-route protection, external-trigger budget drain, and draft resurrection, and the removal test is confirmed."
+    }
+  ]
+}

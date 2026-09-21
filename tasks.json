@@ -1,0 +1,66 @@
+{
+  "_comment": "PHASE B — unattended build. Everything here is language-agnostic and runs against a MOCK CALL-E client, so no real calls are placed and no call credits are spent. Real-API wiring and conversation/prompt design are deliberately NOT in this queue. Run in a worktree with staging Supabase credentials.",
+  "verify": ["pnpm typecheck", "pnpm lint", "pnpm build", "pnpm verify-staging"],
+  "tasks": [
+    {
+      "id": "scaffold",
+      "title": "Scaffold Next.js + Tailwind + brand tokens",
+      "details": "Next.js App Router, TypeScript strict mode, Tailwind. Wire the brand tokens from CLAUDE.md as CSS variables and Tailwind theme extensions. Load Space Grotesk, Geist, Geist Mono. Build one page that renders the palette and all three typefaces so the tokens are visibly verifiable. No business logic.",
+      "done_when": "pnpm dev serves a page showing all four brand colours and all three typefaces; pnpm typecheck && pnpm lint && pnpm build are green."
+    },
+    {
+      "id": "supabase-schema",
+      "title": "Supabase schema and migrations",
+      "details": "Create supabase/migrations/ with tables per SPEC.md: invoices (client_name, amount, currency, due_date, status, language_preference), calls (invoice_id, started_at, duration_seconds, calle_call_id, outcome, transcript_ref), arrangements (invoice_id, proposed_terms, human_approved, client_agreed). RLS enabled on every table with owner-scoped policies. Generate TypeScript types. Service-role key server-side only, never imported into a client component.",
+      "done_when": "Migrations apply cleanly to the staging project, generated types compile, and a script confirms RLS is enabled on all three tables."
+    },
+    {
+      "id": "calle-client-interface",
+      "title": "CALL-E client interface + mock implementation",
+      "details": "Define a single TypeScript interface for the CALL-E integration: placeCall(params), getCallStatus(id), getTranscript(id). Write TWO implementations behind it — a real one that reads CALLE_API_KEY and calls the real endpoints, and a mock that returns deterministic fixture data with realistic latency. Select via env var CALLE_MODE=mock|live, defaulting to mock. Do NOT call the real API in this task or any later task in this queue.",
+      "done_when": "A unit test drives the mock through place -> status -> transcript and asserts the shape; the live implementation typechecks but is never invoked during the run."
+    },
+    {
+      "id": "call-logging",
+      "title": "Call logging and timing instrumentation",
+      "details": "Wrap every CALL-E interface method so each invocation writes a row to calls with start time, duration, outcome, and any error. Timing measured, not estimated. This is the source of the real metrics for the submission, so it must capture actual values, never defaults or placeholders.",
+      "done_when": "Running the mock through five calls produces five rows with distinct non-zero durations, and a failed call is recorded with its error rather than silently dropped."
+    },
+    {
+      "id": "invoice-crud",
+      "title": "Invoice list and detail pages",
+      "details": "Server Components. List page showing invoices with status and days overdue; detail page showing one invoice with its call history and any arrangements. Handle empty state (no invoices) and error state (fetch failed) explicitly, not just the happy path. Responsive at 360px, 768px, 1440px.",
+      "done_when": "Both pages render from seeded staging data, the empty state renders when the table is empty, and all three breakpoints are visually correct."
+    },
+    {
+      "id": "approval-workflow",
+      "title": "Draft-then-approve workflow",
+      "details": "Core safety posture from SPEC.md: the agent drafts a call script and any payment arrangement, and nothing is acted on until a human approves it. Build the draft record, the approval action, and the state machine (drafted -> approved -> executed | rejected). No path may execute an unapproved draft — enforce this at the data layer, not just the UI.",
+      "done_when": "An automated test proves that attempting to execute an unapproved draft fails at the server action level, and that approval transitions state correctly."
+    },
+    {
+      "id": "call-orchestration",
+      "title": "Call orchestration against the mock",
+      "details": "Wire the full path: pick an overdue invoice -> generate a draft script -> human approves -> place call via the CALL-E interface (mock) -> record outcome and transcript -> update invoice status. This is the thin end-to-end demo path. Depth here, not breadth — one complete path working beats five partial ones.",
+      "done_when": "A single command walks an invoice from overdue through approved, called, and outcome-recorded, with rows written at each step, using CALLE_MODE=mock."
+    },
+    {
+      "id": "metrics-harness",
+      "title": "Metrics harness for the submission",
+      "details": "A script that reads the calls table and reports: number of calls placed, completion rate, median duration, median latency. It must report only what was measured and must print 'insufficient data' rather than a number when the sample is empty. No hardcoded or illustrative figures anywhere.",
+      "done_when": "The script runs against mock data and prints real computed values, and prints 'insufficient data' when the table is empty."
+    },
+    {
+      "id": "readme-draft",
+      "title": "Draft the submission README",
+      "details": "Following the structure in SPEC.md: problem, who has it, what it does, how it works, the CALL-E integration and why it is load-bearing, and a 'What this is NOT' section (research prototype, small sample, not a production collections system). Leave every metric as an explicit TODO placeholder — do NOT fill in numbers, since no real calls have been made. Leave the localisation/region section as a TODO too.",
+      "done_when": "README.md exists with all sections drafted and every numeric claim marked TODO rather than filled with a guess."
+    },
+    {
+      "id": "review-pass",
+      "title": "Self-review against the rubric",
+      "details": "Re-read the four judging criteria in CLAUDE.md. Audit the full diff for: RLS on new tables, no service-role key client-side, no secrets committed, no empty catch blocks, no leftover console.log, no unmeasured metric anywhere in the README or UI. Confirm the removal test still passes — deleting the CALL-E interface must break the product. Report findings as Blocking / Should fix / Nitpick. Fix nothing in this task.",
+      "done_when": "REVIEW.md exists listing findings by severity, or stating explicitly that nothing is blocking."
+    }
+  ]
+}

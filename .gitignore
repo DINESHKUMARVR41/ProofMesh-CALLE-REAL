@@ -1,0 +1,25 @@
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+.pnpm-store/
+dist/
+build/
+.next/
+out/
+
+# Logs & runner artifacts
+*.log
+.claude-runs/
+RUN-REPORT.md
+BLOCKED.md
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,7 @@
+allowBuilds:
+  esbuild: false
+  unrs-resolver: false
+# Single-package repo — no workspace packages. This file exists only to record
+# pnpm build-script approvals in the location pnpm 11 reads them from, so
+# `pnpm install` never prompts for build approval and no bogus stub gets
+# generated. Do not add an `allowBuilds:` key (not a real pnpm setting).

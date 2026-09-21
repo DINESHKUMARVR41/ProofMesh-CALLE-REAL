@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #0A0A0B;
+  --pulse: #5C4BFF;
+  --glow: #C9FF3B;
+  --mist: #F5F4F0;
+
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-body: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-serif: var(--font-instrument-serif), Georgia, 'Times New Roman', serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--mist);
+  color: var(--ink);
+}
+.chip{border:1px solid rgba(10,10,11,.10);background:rgba(255,255,255,.55);padding:.45rem .65rem;border-radius:999px}.animate-float{animation:float 3s ease-in-out infinite}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}.scan-line{animation:scan 2.2s ease-in-out infinite}@keyframes scan{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateY(260px);opacity:0}}.node-pop{animation:nodepop .45s ease both}@keyframes nodepop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}.pulse-ring{animation:ring 1.8s ease-out infinite}@keyframes ring{0%{box-shadow:0 0 0 0 rgba(92,75,255,.35)}70%{box-shadow:0 0 0 14px rgba(92,75,255,0)}100%{box-shadow:0 0 0 0 rgba(92,75,255,0)}}

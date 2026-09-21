@@ -1,0 +1,60 @@
+{
+  "_comment": "PHASE C — package the Agent Skill for submission. The PR to github.com/CALLE-AI/awesome-phone-call-agents under skills/ IS the deliverable; the Next.js app is the working access judges test. This queue writes the skill, not app features. Runs offline — no CALL-E calls, no CALLE_MODE change. Run after the Phase B PR is merged. Read the target repo's README and skill template BEFORE task 1 and follow their structure exactly where it differs from anything here.",
+  "verify": ["pnpm typecheck", "pnpm lint", "pnpm build", "pnpm verify-staging", "pnpm verify-skill"],
+  "tasks": [
+    {
+      "id": "read-skill-template",
+      "title": "Read the target repo's skill template and record its exact requirements",
+      "details": "Read github.com/CALLE-AI/awesome-phone-call-agents — the README, the CONTRIBUTING guide, the skills/ directory structure, and at least two existing merged skills (e.g. the ones referenced in PRs #21, #22, #25, #28). Record verbatim in SKILL-TEMPLATE-NOTES.md: the required folder layout, the required SKILL.md frontmatter fields and their exact key names, any validation script the repo runs on PRs (note validate_repository.py and its YAML frontmatter check), naming conventions, and the safety expectations the maintainers stated (E.164 numbers, consent or outreach basis, masked summaries, no duplicate jobs, no hidden recurrence, no credential exposure). Do not write the skill yet. If the repo's structure contradicts anything in later tasks, the repo wins — note the contradiction explicitly.",
+      "done_when": "SKILL-TEMPLATE-NOTES.md exists, quotes the required frontmatter keys and folder layout verbatim from the repo, and lists any PR validation the repo runs."
+    },
+    {
+      "id": "skill-scaffold",
+      "title": "Scaffold the skill folder to the template",
+      "details": "Create skills/calle-invoice-recovery/ following SKILL-TEMPLATE-NOTES.md exactly: SKILL.md with correct frontmatter, plus references/, scripts/, assets/ as the template requires. Write frontmatter and a one-paragraph description only — the conversation design comes next. Use LF line endings and ensure the YAML frontmatter parses (the repo's validator has failed on CRLF before).",
+      "done_when": "The folder matches the template layout, the SKILL.md frontmatter parses as valid YAML with every required key present, and files use LF endings."
+    },
+    {
+      "id": "conversation-flow",
+      "title": "Write the core recovery conversation flow in SKILL.md",
+      "details": "The substance of the submission. Document the call flow end to end: opening and identity confirmation; stating the specific invoice, amount, and age; pausing for the client's response; the four main branches — will pay now, wants a payment date, disputes the amount, cannot pay; how to capture a commitment date; and how to close. Include what the agent must NOT do: never threaten, never claim legal consequences, never negotiate a discount, never accept payment details over the phone. Every branch must terminate in one of the defined outcomes rather than trailing off. Write this as reusable guidance another operator can adapt to their own business, not as a description of this specific app.",
+      "done_when": "SKILL.md documents all four branches with example phrasings, states the prohibited behaviours explicitly, and every branch resolves to a defined outcome."
+    },
+    {
+      "id": "outcomes-and-schema",
+      "title": "Define the structured outcome schema",
+      "details": "Define the result_schema the skill returns: outcome enum (paid_now, committed_to_date, disputed, refused, no_answer, voicemail, wrong_person), commitment date when applicable, dispute reason when applicable, and a confidence field. Note that CALL-E rejects undeclared fields in result_schema, so the declared shape must be exact. Document how each outcome maps to a next action for the operator. Keep this consistent with the outcome values already used in lib/calle/ and the calls table.",
+      "done_when": "SKILL.md contains the full result_schema with every field documented, and the outcome enum matches the values already used in the app's code and database."
+    },
+    {
+      "id": "safety-and-consent",
+      "title": "Write the safety, consent and compliance section",
+      "details": "Cover: the outreach basis for calling a client about a genuine unpaid invoice; E.164 formatting and why a malformed number risks reaching the wrong person (there is a real reported misroute case, so this matters); human approval before any call is placed; no duplicate jobs and no hidden recurrence; masking phone numbers and client names in logs and summaries; never exposing credentials; and the fact that debt collection is regulated differently across jurisdictions so operators must check their own. This section maps directly onto the maintainers' stated safety expectations.",
+      "done_when": "SKILL.md has a safety section covering consent basis, E.164 handling, human approval, no hidden recurrence, PII masking, and a jurisdiction warning."
+    },
+    {
+      "id": "reference-materials",
+      "title": "Write the references/ material",
+      "details": "In references/: an example invoice dataset with names, numbers and amounts fully fictional and E.164-formatted; a worked example of a full call transcript for each of the four branches, written as illustrative examples and labelled as such rather than presented as real call logs; and an adaptation guide covering what another operator must change to use this — their business name, invoice source, tone, and supported region. Note the supported recipient regions and languages from the CALL-E region table.",
+      "done_when": "references/ contains fictional example data, four labelled illustrative transcripts, and an adaptation guide; no real client name, phone number, or invoice appears anywhere."
+    },
+    {
+      "id": "dry-run-script",
+      "title": "Write the dry-run preview script",
+      "details": "In scripts/: a script that takes an invoice record and prints exactly what the agent would say and what parameters would be sent to CALL-E, WITHOUT placing a call. This is the repo's safety-first pattern — it lets a reviewer or new operator inspect the skill without spending credits or dialling anyone. It must be impossible for this script to place a real call; assert on that rather than relying on a flag.",
+      "done_when": "The script runs and prints the full planned call payload and opening script for a sample invoice, places no call, and contains an explicit guard preventing live invocation."
+    },
+    {
+      "id": "skill-readme-and-pr-body",
+      "title": "Write the skill README and draft the PR body",
+      "details": "Write the skill's own README covering what it does, who it is for, how to install and adapt it, and its limitations. Then draft PR-BODY.md for the pull request to awesome-phone-call-agents: what the contribution adds, which Contribution Area it belongs in, how it was tested, and a 'What this is NOT' section (research prototype, small sample, not a production collections system, not legal or debt-collection advice). Leave every metric as an explicit TODO — real numbers come from live calls that have not happened yet. Do not invent figures.",
+      "done_when": "The skill README and PR-BODY.md both exist, contain a 'What this is NOT' section, and every numeric claim is marked TODO rather than filled in."
+    },
+    {
+      "id": "validate-and-review",
+      "title": "Validate against the repo's own checks and self-review",
+      "details": "Run the target repo's validation script against the skill folder if one exists (validate_repository.py or equivalent per SKILL-TEMPLATE-NOTES.md). Then audit: frontmatter parses, no CRLF, no real PII anywhere, no credentials, no unmeasured metric in any file, outcome enum consistent with lib/calle/ and the calls table, and the dry-run script cannot place a call. Report findings as Blocking / Should fix / Nitpick in SKILL-REVIEW.md. Fix nothing in this task.",
+      "done_when": "SKILL-REVIEW.md exists with findings by severity, and the repo's own validator passes against the skill folder or its absence is noted explicitly."
+    }
+  ]
+}

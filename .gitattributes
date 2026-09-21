@@ -1,0 +1,3 @@
+# Normalize line endings: store LF in git, so CLAUDE.md/SPEC.md/etc. don't drift
+# between the repo and worktrees (this caused the PR #1 merge conflict).
+* text=auto eol=lf
