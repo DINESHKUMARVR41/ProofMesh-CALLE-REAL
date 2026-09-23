@@ -1,0 +1,7 @@
+PURCHASE ORDER
+PO Number: PO-1042
+Supplier: ABC Manufacturing Pvt Ltd
+Order Date: 2026-09-10
+Quantity: 400 units
+Unit Price: 1200
+Total Amount: 480000

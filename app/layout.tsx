@@ -19,8 +19,8 @@ const instrumentSerif = Instrument_Serif({
 })
 
 export const metadata: Metadata = {
-  title: 'CALL-E Invoice Recovery Agent',
-  description: 'Overdue-invoice recovery calls for freelancers and small agencies',
+  title: 'ProofMesh — Evidence Intelligence',
+  description: 'Trace evidence, verify contradictions, and investigate unresolved claims with human approval.',
 }
 
 export default function RootLayout({

@@ -1,0 +1,541 @@
+{
+  "id": "76a954ec-52e7-4445-b5a3-490c7210a4ef",
+  "name": "Supplier evidence review",
+  "status": "ready",
+  "createdAt": "2026-09-23T14:20:15.092Z",
+  "documents": [
+    {
+      "id": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "name": "delivery-note-DN-771.txt",
+      "mimeType": "text/plain",
+      "size": 144,
+      "sha256": "2e459e03d4420fb7922ce5a19aa1f6328c399fc41442c331019f638efa1335df",
+      "kind": "delivery_note",
+      "createdAt": "2026-09-23T14:19:50.172Z",
+      "textPreview": "DELIVERY NOTE Delivery Note Number: DN-771 Supplier: ABC Manufacturing Pvt Ltd Delivery Date: 2026-09-19 Quantity: 350 units PO Number: PO-1042"
+    },
+    {
+      "id": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "name": "invoice-INV-8831.txt",
+      "mimeType": "text/plain",
+      "size": 151,
+      "sha256": "69e51886e6290a69b3e125acf86ce81a742e50e5cfb233d7de3fbd9fe8c728cd",
+      "kind": "invoice",
+      "createdAt": "2026-09-23T14:20:01.895Z",
+      "textPreview": "INVOICE Invoice Number: INV-8831 Supplier: ABC Manufacturing Pvt Ltd Invoice Date: 2026-09-18 Quantity: 500 units Unit Price: 1200 Grand Total: 600000"
+    },
+    {
+      "id": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "name": "purchase-order-PO-1042.txt",
+      "mimeType": "text/plain",
+      "size": 151,
+      "sha256": "d050322714303165ccaf82905cb423e480bee5d52f5b611fda40d6256d8e2203",
+      "kind": "purchase_order",
+      "createdAt": "2026-09-23T14:20:09.076Z",
+      "textPreview": "PURCHASE ORDER PO Number: PO-1042 Supplier: ABC Manufacturing Pvt Ltd Order Date: 2026-09-10 Quantity: 400 units Unit Price: 1200 Total Amount: 480000"
+    }
+  ],
+  "claims": [
+    {
+      "id": "e0eabfb8-b044-42fc-a877-903c408e89e4",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "sourceName": "delivery-note-DN-771.txt",
+      "type": "text",
+      "subject": "document",
+      "predicate": "type",
+      "value": "DELIVERY NOTE",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "b7dddadf-168b-4570-9f8e-a18ce3558a53",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "sourceName": "delivery-note-DN-771.txt",
+      "type": "identifier",
+      "subject": "delivery_note",
+      "predicate": "number",
+      "value": "DN-771",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "370c585b-6619-46db-a95e-0f4ef3605677",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "sourceName": "delivery-note-DN-771.txt",
+      "type": "entity",
+      "subject": "delivery_note",
+      "predicate": "supplier",
+      "value": "ABC Manufacturing Pvt Ltd",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "c46c86d1-4739-40a4-b257-b38e8566d084",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "sourceName": "delivery-note-DN-771.txt",
+      "type": "date",
+      "subject": "delivery",
+      "predicate": "date",
+      "value": "2026-09-19",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "ced0728d-36d4-4991-9d77-985418eb7954",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "sourceName": "delivery-note-DN-771.txt",
+      "type": "quantity",
+      "subject": "delivery",
+      "predicate": "quantity",
+      "value": "350",
+      "unit": "units",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "a8480129-2761-4d96-9ace-2ee03c65292a",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "sourceName": "delivery-note-DN-771.txt",
+      "type": "identifier",
+      "subject": "purchase_order",
+      "predicate": "number",
+      "value": "PO-1042",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "7930c191-5b78-4338-b706-9f2b7931c775",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "sourceName": "invoice-INV-8831.txt",
+      "type": "identifier",
+      "subject": "invoice",
+      "predicate": "number",
+      "value": "INV-8831",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "3d61a09b-798b-46d4-90bc-256f7f111227",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "sourceName": "invoice-INV-8831.txt",
+      "type": "entity",
+      "subject": "invoice",
+      "predicate": "supplier",
+      "value": "ABC Manufacturing Pvt Ltd",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "79c4f0f4-2a45-4270-a0a8-808257ff6f5d",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "sourceName": "invoice-INV-8831.txt",
+      "type": "date",
+      "subject": "invoice",
+      "predicate": "date",
+      "value": "2026-09-18",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "2beb236c-88ed-4a77-bc2b-212baf75e71c",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "sourceName": "invoice-INV-8831.txt",
+      "type": "quantity",
+      "subject": "invoice",
+      "predicate": "total_quantity",
+      "value": "500",
+      "unit": "units",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "78239784-0829-4215-b99f-41708b9edfc7",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "sourceName": "invoice-INV-8831.txt",
+      "type": "price",
+      "subject": "item",
+      "predicate": "unit_price",
+      "value": "1200",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "56823d95-f7ed-46c3-9963-c724bf0e6023",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "sourceName": "invoice-INV-8831.txt",
+      "type": "total",
+      "subject": "invoice",
+      "predicate": "grand_total",
+      "value": "600000",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "e6e337c8-0981-41c7-ac21-d8d651af0984",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "sourceName": "purchase-order-PO-1042.txt",
+      "type": "identifier",
+      "subject": "Purchase Order",
+      "predicate": "Number",
+      "value": "PO-1042",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "d85cc6b8-8e1c-411e-8ded-7461940ef8db",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "sourceName": "purchase-order-PO-1042.txt",
+      "type": "entity",
+      "subject": "Purchase Order",
+      "predicate": "Supplier",
+      "value": "ABC Manufacturing Pvt Ltd",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "9b053c8b-5051-4c04-bfb6-db5a5d533fc4",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "sourceName": "purchase-order-PO-1042.txt",
+      "type": "date",
+      "subject": "Order",
+      "predicate": "Date",
+      "value": "2026-09-10",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "e7b3b29d-3c61-41d2-8c5e-4814e30c81b8",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "sourceName": "purchase-order-PO-1042.txt",
+      "type": "quantity",
+      "subject": "Order",
+      "predicate": "Quantity",
+      "value": "400",
+      "unit": "units",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "ac41444a-60ed-4850-a3f5-5e3aa29b3e09",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "sourceName": "purchase-order-PO-1042.txt",
+      "type": "price",
+      "subject": "Order Item",
+      "predicate": "Unit Price",
+      "value": "1200",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    },
+    {
+      "id": "08dcd82c-fb37-4a98-9087-a93d7e3b9083",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "sourceName": "purchase-order-PO-1042.txt",
+      "type": "total",
+      "subject": "Purchase Order",
+      "predicate": "Total Amount",
+      "value": "480000",
+      "confidence": 1,
+      "extractedBy": "gemini"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "label": "delivery-note-DN-771.txt",
+      "type": "delivery_note",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf"
+    },
+    {
+      "id": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "label": "invoice-INV-8831.txt",
+      "type": "invoice",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f"
+    },
+    {
+      "id": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "label": "purchase-order-PO-1042.txt",
+      "type": "purchase_order",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb"
+    },
+    {
+      "id": "claim-e0eabfb8-b044-42fc-a877-903c408e89e4",
+      "label": "type: DELIVERY NOTE",
+      "type": "claim",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf"
+    },
+    {
+      "id": "claim-b7dddadf-168b-4570-9f8e-a18ce3558a53",
+      "label": "number: DN-771",
+      "type": "claim",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf"
+    },
+    {
+      "id": "claim-370c585b-6619-46db-a95e-0f4ef3605677",
+      "label": "supplier: ABC Manufacturing Pvt Ltd",
+      "type": "claim",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf"
+    },
+    {
+      "id": "claim-c46c86d1-4739-40a4-b257-b38e8566d084",
+      "label": "date: 2026-09-19",
+      "type": "claim",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf"
+    },
+    {
+      "id": "claim-ced0728d-36d4-4991-9d77-985418eb7954",
+      "label": "quantity: 350",
+      "type": "claim",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf"
+    },
+    {
+      "id": "claim-a8480129-2761-4d96-9ace-2ee03c65292a",
+      "label": "number: PO-1042",
+      "type": "claim",
+      "sourceId": "9639931c-a99c-4de1-87a1-4d7d4ab188bf"
+    },
+    {
+      "id": "claim-7930c191-5b78-4338-b706-9f2b7931c775",
+      "label": "number: INV-8831",
+      "type": "claim",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f"
+    },
+    {
+      "id": "claim-3d61a09b-798b-46d4-90bc-256f7f111227",
+      "label": "supplier: ABC Manufacturing Pvt Ltd",
+      "type": "claim",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f"
+    },
+    {
+      "id": "claim-79c4f0f4-2a45-4270-a0a8-808257ff6f5d",
+      "label": "date: 2026-09-18",
+      "type": "claim",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f"
+    },
+    {
+      "id": "claim-2beb236c-88ed-4a77-bc2b-212baf75e71c",
+      "label": "total_quantity: 500",
+      "type": "claim",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f"
+    },
+    {
+      "id": "claim-78239784-0829-4215-b99f-41708b9edfc7",
+      "label": "unit_price: 1200",
+      "type": "claim",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f"
+    },
+    {
+      "id": "claim-56823d95-f7ed-46c3-9963-c724bf0e6023",
+      "label": "grand_total: 600000",
+      "type": "claim",
+      "sourceId": "52d3859e-329d-42d5-b676-b7d3c598a55f"
+    },
+    {
+      "id": "claim-e6e337c8-0981-41c7-ac21-d8d651af0984",
+      "label": "Number: PO-1042",
+      "type": "claim",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb"
+    },
+    {
+      "id": "claim-d85cc6b8-8e1c-411e-8ded-7461940ef8db",
+      "label": "Supplier: ABC Manufacturing Pvt Ltd",
+      "type": "claim",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb"
+    },
+    {
+      "id": "claim-9b053c8b-5051-4c04-bfb6-db5a5d533fc4",
+      "label": "Date: 2026-09-10",
+      "type": "claim",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb"
+    },
+    {
+      "id": "claim-e7b3b29d-3c61-41d2-8c5e-4814e30c81b8",
+      "label": "Quantity: 400",
+      "type": "claim",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb"
+    },
+    {
+      "id": "claim-ac41444a-60ed-4850-a3f5-5e3aa29b3e09",
+      "label": "Unit Price: 1200",
+      "type": "claim",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb"
+    },
+    {
+      "id": "claim-08dcd82c-fb37-4a98-9087-a93d7e3b9083",
+      "label": "Total Amount: 480000",
+      "type": "claim",
+      "sourceId": "d424cd00-2ba6-4745-bfb4-f545511f05fb"
+    },
+    {
+      "id": "entity-d77b8c0d",
+      "label": "ABC Manufacturing Pvt Ltd",
+      "type": "entity"
+    }
+  ],
+  "edges": [
+    {
+      "source": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "target": "claim-e0eabfb8-b044-42fc-a877-903c408e89e4",
+      "label": "type"
+    },
+    {
+      "source": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "target": "claim-b7dddadf-168b-4570-9f8e-a18ce3558a53",
+      "label": "number"
+    },
+    {
+      "source": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "target": "claim-370c585b-6619-46db-a95e-0f4ef3605677",
+      "label": "supplier"
+    },
+    {
+      "source": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "target": "claim-c46c86d1-4739-40a4-b257-b38e8566d084",
+      "label": "date"
+    },
+    {
+      "source": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "target": "claim-ced0728d-36d4-4991-9d77-985418eb7954",
+      "label": "quantity"
+    },
+    {
+      "source": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "target": "claim-a8480129-2761-4d96-9ace-2ee03c65292a",
+      "label": "number"
+    },
+    {
+      "source": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "target": "claim-7930c191-5b78-4338-b706-9f2b7931c775",
+      "label": "number"
+    },
+    {
+      "source": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "target": "claim-3d61a09b-798b-46d4-90bc-256f7f111227",
+      "label": "supplier"
+    },
+    {
+      "source": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "target": "claim-79c4f0f4-2a45-4270-a0a8-808257ff6f5d",
+      "label": "date"
+    },
+    {
+      "source": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "target": "claim-2beb236c-88ed-4a77-bc2b-212baf75e71c",
+      "label": "total_quantity"
+    },
+    {
+      "source": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "target": "claim-78239784-0829-4215-b99f-41708b9edfc7",
+      "label": "unit_price"
+    },
+    {
+      "source": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "target": "claim-56823d95-f7ed-46c3-9963-c724bf0e6023",
+      "label": "grand_total"
+    },
+    {
+      "source": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "target": "claim-e6e337c8-0981-41c7-ac21-d8d651af0984",
+      "label": "Number"
+    },
+    {
+      "source": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "target": "claim-d85cc6b8-8e1c-411e-8ded-7461940ef8db",
+      "label": "Supplier"
+    },
+    {
+      "source": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "target": "claim-9b053c8b-5051-4c04-bfb6-db5a5d533fc4",
+      "label": "Date"
+    },
+    {
+      "source": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "target": "claim-e7b3b29d-3c61-41d2-8c5e-4814e30c81b8",
+      "label": "Quantity"
+    },
+    {
+      "source": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "target": "claim-ac41444a-60ed-4850-a3f5-5e3aa29b3e09",
+      "label": "Unit Price"
+    },
+    {
+      "source": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "target": "claim-08dcd82c-fb37-4a98-9087-a93d7e3b9083",
+      "label": "Total Amount"
+    },
+    {
+      "source": "entity-d77b8c0d",
+      "target": "9639931c-a99c-4de1-87a1-4d7d4ab188bf",
+      "label": "appears in"
+    },
+    {
+      "source": "entity-d77b8c0d",
+      "target": "52d3859e-329d-42d5-b676-b7d3c598a55f",
+      "label": "appears in"
+    },
+    {
+      "source": "entity-d77b8c0d",
+      "target": "d424cd00-2ba6-4745-bfb4-f545511f05fb",
+      "label": "appears in"
+    }
+  ],
+  "findings": [
+    {
+      "type": "quantity_invoice_po",
+      "title": "Invoice quantity differs from purchase order",
+      "severity": "critical",
+      "status": "unresolved",
+      "explanation": "The invoice lists 500 units while the purchase order lists 400 units. The invoice is +100 units versus the PO baseline.",
+      "claimIds": [
+        "e7b3b29d-3c61-41d2-8c5e-4814e30c81b8",
+        "2beb236c-88ed-4a77-bc2b-212baf75e71c"
+      ],
+      "missingEvidence": [
+        "Approved purchase-order amendment explaining the invoice quantity"
+      ],
+      "recommendedAction": "Hold payment for the quantity difference until an approved amendment or equivalent supporting evidence is reviewed.",
+      "id": "b4d8f081-3c5f-489e-b952-c9ff69aa6c4c",
+      "createdAt": "2026-09-23T14:20:15.091Z"
+    },
+    {
+      "type": "quantity_po_delivery",
+      "title": "Delivered quantity differs from purchase order",
+      "severity": "critical",
+      "status": "unresolved",
+      "explanation": "The delivery note records 350 units while the purchase order lists 400 units. Delivery is -50 units versus the PO baseline.",
+      "claimIds": [
+        "e7b3b29d-3c61-41d2-8c5e-4814e30c81b8",
+        "ced0728d-36d4-4991-9d77-985418eb7954"
+      ],
+      "missingEvidence": [
+        "Approved delivery reconciliation or amendment for the quantity difference"
+      ],
+      "recommendedAction": "Reconcile delivered quantity against the PO before accepting the invoice quantity.",
+      "id": "80ebf74f-533e-47a0-87c2-ee9bd3b05c34",
+      "createdAt": "2026-09-23T14:20:15.091Z"
+    },
+    {
+      "type": "quantity_invoice_delivery",
+      "title": "Invoice quantity differs from delivery evidence",
+      "severity": "warning",
+      "status": "unresolved",
+      "explanation": "The invoice lists 500 units while the delivery note records 350 units, a +150-unit gap between billing and delivery evidence.",
+      "claimIds": [
+        "2beb236c-88ed-4a77-bc2b-212baf75e71c",
+        "ced0728d-36d4-4991-9d77-985418eb7954"
+      ],
+      "missingEvidence": [
+        "Delivery reconciliation or supporting dispatch record"
+      ],
+      "recommendedAction": "Confirm why the billed quantity differs from the documented delivered quantity.",
+      "id": "096ac1b3-0167-44d5-b2b0-4ee5db82d37d",
+      "createdAt": "2026-09-23T14:20:15.091Z"
+    }
+  ],
+  "investigations": [],
+  "summary": {
+    "totalClaims": 18,
+    "findings": 3,
+    "unresolved": 3,
+    "verified": 0
+  }
+}
