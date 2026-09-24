@@ -19,7 +19,7 @@ export async function GET(req:Request,{params}:{params:Promise<{id:string}>}){
     if(nextClaim&&!c.claims.some(x=>x.type==='supplier_statement'&&x.sourceId===inv.id))c.claims.push({id:crypto.randomUUID(),sourceId:inv.id,sourceName:`CALL-E · ${inv.contactName}`,type:'supplier_statement',subject:'supplier',predicate:'statement',value:nextClaim,confidence:Math.min(.35,Number(task.structured_result.confidence)||.35),extractedBy:'call'})
   }
   const attempt=task.recipients?.[0]?.attempts?.at(-1) as {transcript_turns?: Array<{speaker?: string;text?: string;offset_seconds?: number}>}|undefined
-  if(attempt?.transcript_turns)inv.transcript=attempt.transcript_turns.map((x)=>({role:x.speaker==='bot'?'agent':'human',text:x.text,timestampSeconds:x.offset_seconds}))
+  if(attempt?.transcript_turns)inv.transcript=attempt.transcript_turns.map((x)=>({role:x.speaker==='bot'?'agent':'human',text:x.text ?? '',timestampSeconds:x.offset_seconds ?? 0}))
   await saveCase(c)
   return NextResponse.json({case:c,investigation:inv})
 }
